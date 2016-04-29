@@ -1,4 +1,4 @@
-// Tekst zadatka - http://home.etf.rs/~kraus/nastava/oop1/ispiti/isp_2011_01_14.html
+// Tekst zadatka - http://home.etf.rs/~kraus/nastava/oop1/ispiti/isp_2013_01_17.html
 
 #include <iostream>
 #include <exception>
