@@ -41,7 +41,7 @@ public abstract class Saobracajnica extends Thread {
     public void run() {
         try {
             while (!interrupted()) {
-                while (!radi_) wait();
+                synchronized (this) { while (!radi_) wait(); }
                 aktivnost();
                 int vreme = (int) (Math.random() * (gornja_ - donja_) + donja_);
                 TimeUnit.MILLISECONDS.sleep(vreme);
