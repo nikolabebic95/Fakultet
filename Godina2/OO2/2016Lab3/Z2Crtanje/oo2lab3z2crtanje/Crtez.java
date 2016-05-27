@@ -27,6 +27,8 @@ public class Crtez extends Canvas {
 
     private final static long SLEEP_TIME_MILLISECONDS = 5;
 
+    Thread nit_;
+
     public Crtez(int gore, int dole, int levo, int desno) {
         gore_ = gore;
         dole_ = dole;
@@ -46,26 +48,33 @@ public class Crtez extends Canvas {
         return new Tacka(x, y);
     }
 
+    public void prekini() {
+        if (nit_!=null) nit_.interrupt();
+    }
+    
     public void crtaj(Kriva kriva, Color boja, double donjaGranica, double gornjaGranica, double korak) {
-        // Mozda staviti u posebnu nit
-        Graphics olovka = getGraphics();
-        olovka.clearRect(0, 0, getWidth(), getHeight());
-        olovka.setColor(boja);
-        for (double i = donjaGranica; i <= gornjaGranica; i += korak) {
-            double sledeci = i + korak;
-            if (sledeci > gornjaGranica) {
-                sledeci = gornjaGranica;
-            }
-            Tacka t1 = kriva.izracunaj(i);
-            Tacka t2 = kriva.izracunaj(sledeci);
-            t1 = skaliraj(t1);
-            t2 = skaliraj(t2);
-            olovka.drawLine((int) t1.x(), (int) t1.y(), (int) t2.x(), (int) t2.y());
+        if (nit_!=null) nit_.interrupt();
+        nit_ = new Thread(() -> {
             try {
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME_MILLISECONDS);
+                Graphics olovka = getGraphics();
+                olovka.clearRect(0, 0, getWidth(), getHeight());
+                olovka.setColor(boja);
+                for (double i = donjaGranica; i <= gornjaGranica; i += korak) {
+                    double sledeci = i + korak;
+                    if (sledeci > gornjaGranica) {
+                        sledeci = gornjaGranica;
+                    }
+                    Tacka t1 = kriva.izracunaj(i);
+                    Tacka t2 = kriva.izracunaj(sledeci);
+                    t1 = skaliraj(t1);
+                    t2 = skaliraj(t2);
+                    olovka.drawLine((int) t1.x(), (int) t1.y(), (int) t2.x(), (int) t2.y());
+                    TimeUnit.MILLISECONDS.sleep(SLEEP_TIME_MILLISECONDS);
+                }
             } catch (InterruptedException e) {
             }
-        }
+        });
+        nit_.start();
     }
 
 }

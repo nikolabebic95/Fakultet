@@ -64,6 +64,7 @@ public class Program extends Frame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
+                crtez_.prekini();
                 dispose();
             }
         });
