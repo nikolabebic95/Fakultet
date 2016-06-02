@@ -16,6 +16,7 @@ public class Kruzni extends Indikator {
     @Override
     public void obavesti(int procenat) {
         Graphics g = getGraphics();
+        g.setColor(boja_);
         g.fillArc(0, 0, getWidth(), getHeight(), 0, 360 * procenat / 100);
     }
 }
