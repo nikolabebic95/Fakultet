@@ -53,18 +53,40 @@ public final class Prikazivac extends Frame {
             else generator = new Trougaoni();
             double pocetni_ugao = POCETNI_UGAO;
             double krajnji_ugao = pocetni_ugao + SIRINA_UGLA;
+            int centar_x = getWidth() / 2;
+            int centar_y = getHeight() / 2;
+            int kvadrant = 0;
+            double poluprecnik = 0;
             try {
                 while (!Thread.interrupted()) {
-                    int centar_x = getWidth() / 2;
-                    int centar_y = getHeight() / 2;
                     Tacka centar = new Tacka(centar_x, centar_y);
-                    double poluprecnik = generator.proizvedi();
+                    double prethodni = poluprecnik;
+                    poluprecnik = generator.proizvedi();
                     Luk luk = new Luk(centar, poluprecnik, pocetni_ugao, krajnji_ugao, getGraphics());
                     luk.crtaj();
                     pocetni_ugao = krajnji_ugao;
                     if (pocetni_ugao >= SIRINA_KRUGA) pocetni_ugao -= SIRINA_KRUGA;
                     krajnji_ugao += SIRINA_UGLA;
                     if (krajnji_ugao > SIRINA_KRUGA) krajnji_ugao -= SIRINA_KRUGA;
+                    kvadrant = (kvadrant + 1) % 4;
+                    switch (kvadrant) {
+                        case 1:
+                            centar_x += 0;
+                            centar_y += (int) (poluprecnik - prethodni);
+                            break;
+                        case 2:
+                            centar_x += (int) (poluprecnik - prethodni);
+                            centar_y += 0;
+                            break;
+                        case 3:
+                            centar_x += 0;
+                            centar_y += (int) -(poluprecnik - prethodni);
+                            break;
+                        case 0:
+                            centar_x += (int) -(poluprecnik - prethodni);
+                            centar_y += 0;
+                            break;
+                    }
                 }
             } catch (InterruptedException e) {
             }
