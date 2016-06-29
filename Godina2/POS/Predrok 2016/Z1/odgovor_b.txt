@@ -1,0 +1,1 @@
+Sinhronizacija medju nitima je potrebna kako bi na pocetku niti utvrdile koja nit ce popunjavati koji deo matrice. Prilikom samog popunjavanja matrice, sinhronizacija nije potrebna
