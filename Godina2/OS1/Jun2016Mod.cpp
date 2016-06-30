@@ -38,7 +38,11 @@ struct IOJob {
     IOJob *next;
 };
 
-// Resenje (kraj fajla thread.cpp):
+// Resenja (kraj fajla thread.cpp):
+//
+//==========================================================================================================//
+//
+// Preko semafora:
 
 #include <semaphore.h>
 #include <dos.h>
@@ -60,3 +64,27 @@ void send(IOJob *job) {
     mutex.signal();
     asm popf;
 }
+
+//==========================================================================================================//
+//
+// Preko dogadjaja:
+
+#include <semaphore.h>
+#include <event.h>
+#include <dos.h>
+
+PREPAREENTRY(112, 0);
+
+void send(IOJob *job) {
+    asm pushf;
+    asm cli;
+    static Semaphore mutex(1);
+    static Event event112(112);
+    mutex.wait(0);
+    send(job->src, job->size);
+    event112.wait();
+    mutex.signal();
+    asm popf;
+}
+
+//==========================================================================================================//
