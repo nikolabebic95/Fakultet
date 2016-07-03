@@ -44,7 +44,7 @@ struct IOJob {
 //
 // Preko semafora:
 
-#include <semaphore.h>
+#include <semaphor.h>
 #include <dos.h>
 
 Semaphore wait_sem(0);
@@ -69,7 +69,7 @@ void send(IOJob *job) {
 //
 // Preko dogadjaja:
 
-#include <semaphore.h>
+#include <semaphor.h>
 #include <event.h>
 #include <dos.h>
 
@@ -86,5 +86,25 @@ void send(IOJob *job) {
     mutex.signal();
     asm popf;
 }
+
+//==========================================================================================================//
+//
+// Cheat koji je radio (jer sam pogledao njihovu implementaciju), ali ne moze tako da se radi:
+
+#include <semaphor.h>
+#include <dos.h>
+
+void send(IOJob *job) {
+    asm pushf;
+    asm cli;
+    static Semaphore mutex(1);
+    static Semaphore sleep_sem(0);
+    mutex.wait(0);
+    send(job->src, job->size);
+    sleep_sem.wait(10);
+    mutex.signal();
+    asm popf;
+}
+
 
 //==========================================================================================================//
