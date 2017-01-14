@@ -1,0 +1,47 @@
+//==========================================================================================================//
+//==========================================================================================================//
+//
+//  Nikola Bebic - bn140314d@student.etf.rs
+//
+//  OS2 
+//  Kontrola pristupa resursu
+//  Implementacija preko monitora
+//
+//==========================================================================================================//
+//==========================================================================================================//
+//
+//  Zadatak:
+//
+//  Jun 2016.
+//  Koriscenjem klasicnih uslovnih promenljivih, napisati kod monitora koji moze da posluzi za
+//  kontrolu pristupa resursu kome istovremeno moze pristupiti najvise N uporednih procesa. 
+// 
+//==========================================================================================================//
+//==========================================================================================================//
+
+monitor ResourceController
+    export getResource, returnResource;
+
+    var
+        value: integer;
+        cond: condition;
+        res: resource; // Sta god resurs bio
+
+    function getResource: resource;
+    begin
+        value := value - 1;
+        while (value < 0) do cond.wait();
+        getResource := res; // Vracanje vrednosti
+    end getResource;
+
+    procedure returnResource;
+    begin
+        value := value + 1;
+        if (value <= 0) then cond.signal(); // Ne mora da bude pod if-om
+    end returnResource;
+
+/* Inicijalizacija */
+begin
+    value := N; // N je zadato N, broj procesa
+    res := R; // R je neki resurs
+end;
