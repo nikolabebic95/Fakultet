@@ -4,7 +4,7 @@
 //  Nikola Bebic - bn140314d@student.etf.rs
 //
 //  OS2 
-//  Semafor
+//  Binarni semafor (event)
 //  Implementacija preko monitora
 //
 //==========================================================================================================//
@@ -12,34 +12,32 @@
 //
 //  Zadatak:
 //
-//  Januar 2016.
-//  Na jeziku Java napisati kod za monitor koji realizuje standardni brojački semafor. 
+//  Februar 2015.
+//  Realizovati binarni semafor koriscenjem monitora i klasicnih uslovnih promenljivih. 
 // 
 //==========================================================================================================//
 //==========================================================================================================//
 
-public class MySemaphore {
+monitor Event
+    export wait, signal;
 
-    private int value;
+    var
+        value: integer;
+        cond: condition;
 
-    public MySemaphore() {
-        this(0); // Default value
-    }
+    procedure wait;
+    begin
+        value := value - 1;
+        while (value == -1) do cond.wait();
+    end wait;
 
-    public MySemaphore(int value) {
-        this.value = value;
-    }
+    procedure signal;
+    begin
+        if (value < 1) then value := value + 1;
+        cond.signal(); 
+    end signal;
 
-    public synchronized void semaphoreWait() throws InterruptedException {
-        value--;
-        while (value < 0) {
-            wait();
-        }
-    }
-
-    public synchronized void semaphoreSignal() {
-        if (++value <= 0) {
-            notify();
-        }
-    }
-}
+/* Inicijalizacija */
+begin
+    value := 0;
+end;

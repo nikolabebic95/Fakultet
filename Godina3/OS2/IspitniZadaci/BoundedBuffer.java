@@ -3,7 +3,7 @@
 //
 //  Nikola Bebic - bn140314d@student.etf.rs
 //
-//  OS2 
+//  OS2
 //  BoundedBuffer
 //  Implementacija preko monitora
 //
@@ -14,13 +14,13 @@
 //
 //  Januar 2015.
 //  Na jeziku Java napisati kod monitora koji realizuje ograničeni bafer (bounded buffer).
-// 
+//
 //==========================================================================================================//
 //==========================================================================================================//
 
 public class BoundedBuffer<T> {
 
-    private T[] vect;
+    private Object[] vect;
 
     private int front;
     private int back;
@@ -28,10 +28,10 @@ public class BoundedBuffer<T> {
     private int num_of_elements;
 
     public BoundedBuffer(int capacity) {
-        vect = new T[capacity];
+        vect = new Object[capacity];
     }
 
-    public synchronized void put(T element) {
+    public synchronized void put(T element) throws InterruptedException {
         if (num_of_elements == vect.length) {
             wait();
         }
@@ -45,12 +45,13 @@ public class BoundedBuffer<T> {
         }
     }
 
-    public synchronized T get() {
+    public synchronized T get() throws InterruptedException {
         if (num_of_elements == 0) {
             wait();
         }
 
-        T ret = vect[front];
+        @SuppressWarnings("unchecked")
+        final T ret = (T)vect[front];
         front = (front + 1) % vect.length;
         num_of_elements--;
 
