@@ -30,7 +30,7 @@ monitor ResourceController
     function getResource: resource;
     begin
         value := value - 1;
-        while (value < 0) do cond.wait();
+        if (value < 0) do cond.wait();
         getResource := res; // Vracanje vrednosti
     end getResource;
 

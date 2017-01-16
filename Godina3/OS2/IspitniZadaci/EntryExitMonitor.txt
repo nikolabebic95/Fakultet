@@ -30,7 +30,7 @@ monitor EntryExitMonitor
     procedure entry;
     begin
         value := value - 1;
-        while (value < 0) do cond.wait();
+        if (value < 0) do cond.wait();
     end entry;
 
     procedure exit;

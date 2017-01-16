@@ -22,6 +22,8 @@ public class MySemaphore {
 
     private int value;
 
+    private boolean should_unblock;
+
     public MySemaphore() {
         this(0); // Default value
     }
@@ -34,11 +36,16 @@ public class MySemaphore {
         value--;
         while (value < 0) {
             wait();
+            if (should_unblock) {
+                should_unblock = false;
+                break;
+            }
         }
     }
 
     public synchronized void semaphoreSignal() {
         if (++value <= 0) {
+            should_unblock = true;
             notify();
         }
     }
