@@ -1,0 +1,45 @@
+//==========================================================================================================//
+//==========================================================================================================//
+//
+//  Nikola Bebic - bn140314d@student.etf.rs
+//
+//  OS2 
+//  Kriticna sekcija sa najvise N niti
+//  Implementacija preko monitora
+//
+//==========================================================================================================//
+//==========================================================================================================//
+//
+//  Zadatak:
+//
+//  Jun 2015.
+//  Koriscenjem klasicnih uslovnih promenljivih, realizovati monitor sa dve operacije,
+//  entry i exit, koje procesi pozivaju kada ulaze, odnosno izlaze iz kriticne sekcije,
+//  pri cemu se dozvoljava da najvise N procesa uporedo izvrsava kriticnu sekciju.
+// 
+//==========================================================================================================//
+//==========================================================================================================//
+
+monitor EntryExitMonitor
+    export entry, exit;
+
+    var
+        value: integer;
+        cond: condition;
+
+    procedure entry;
+    begin
+        value := value - 1;
+        while (value < 0) do cond.wait();
+    end entry;
+
+    procedure exit;
+    begin
+        value := value + 1;
+        if (value <= 0) then cond.signal(); // Ne mora da bude pod if-om
+    end exit;
+
+/* Inicijalizacija */
+begin
+    value := N; // N je zadato N, broj procesa
+end;

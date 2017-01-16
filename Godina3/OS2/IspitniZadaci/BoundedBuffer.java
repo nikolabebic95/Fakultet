@@ -32,7 +32,7 @@ public class BoundedBuffer<T> {
     }
 
     public synchronized void put(T element) throws InterruptedException {
-        if (num_of_elements == vect.length) {
+        while (num_of_elements == vect.length) {
             wait();
         }
 
@@ -41,12 +41,12 @@ public class BoundedBuffer<T> {
         num_of_elements++;
 
         if (num_of_elements == 1) {
-            notifyAll();
+            notify();
         }
     }
 
     public synchronized T get() throws InterruptedException {
-        if (num_of_elements == 0) {
+        while (num_of_elements == 0) {
             wait();
         }
 
@@ -56,7 +56,7 @@ public class BoundedBuffer<T> {
         num_of_elements--;
 
         if (num_of_elements == vect.length - 1) {
-            notifyAll();
+            notify();
         }
 
         return ret;
