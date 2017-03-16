@@ -6,6 +6,7 @@
 package sprites;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -14,12 +15,18 @@ import javafx.scene.shape.Rectangle;
  */
 public class FloorBlock extends Sprite {
 
-    private Rectangle block;
-
+    private final Rectangle block;
+    private final Rectangle grass;
+    
     public FloorBlock() {
-        block = new Rectangle(-0.5, -0.5, 1, 1);
+        block = new Rectangle(-0.5, -0.5, 1, 1);        
         block.setFill(Color.SIENNA);
+        
+        grass = new Rectangle(-0.5, -0.5, 1, 0.3);
+        grass.setFill(Color.GREENYELLOW);
+        
         getChildren().add(block);
+        getChildren().add(grass);
     }
 
 }

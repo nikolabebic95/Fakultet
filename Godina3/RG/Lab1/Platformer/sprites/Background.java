@@ -6,6 +6,9 @@
 package sprites;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -16,7 +19,10 @@ public class Background extends Sprite {
 
     public Background(int width, int height) {
         Rectangle bg = new Rectangle(0, 0, width, height);
-        bg.setFill(Color.SKYBLUE);
+        
+        Stop [] stops = new Stop[] {new Stop(0, Color.SKYBLUE), new Stop(1, Color.STEELBLUE)};
+        
+        bg.setFill(new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops));
         getChildren().add(bg);
     }
 }

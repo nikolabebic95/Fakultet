@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sprites.Background;
+import sprites.Cloud;
 import sprites.Enemy;
 import sprites.Floor;
 import sprites.Player;
@@ -81,6 +82,13 @@ public class Main extends Application {
         enemies = new LinkedList<>();
         Background bg = new Background(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        Cloud cloud1 = new Cloud();
+        cloud1.setTranslateX(1200);
+        cloud1.setTranslateY(600);
+        Cloud cloud2 = new Cloud();
+        cloud2.setTranslateX(500);
+        cloud2.setTranslateY(300);
+        
         Floor floor = new Floor(FLOOR_WIDTH, FLOOR_HEIGHT);
         floor.setTranslateY(WINDOW_HEIGHT);
 
@@ -106,6 +114,8 @@ public class Main extends Application {
 
         Group root = new Group();
         root.getChildren().add(bg);
+        root.getChildren().add(cloud1);
+        root.getChildren().add(cloud2);
         root.getChildren().add(camera);
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
