@@ -1,4 +1,0 @@
-Napisati program u kome glavna nit (kreirana nad funkcijom main) treba da pokrene tri 
-instance niti koje ispisuju poruku “I am <ThreadX>!” (<ThreadX> je ime te niti). 
-Kada sve tri niti ispišu svoju poruku, u bilo kom redosledu, tada glavna nit ispisuje
-poruku „END“ i zavrsava program.

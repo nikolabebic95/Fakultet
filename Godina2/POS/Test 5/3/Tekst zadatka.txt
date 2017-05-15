@@ -1,2 +1,0 @@
-Dve niti klase NitX, T1 i T2, naizmenicno treba da inkrementiraju vrednost
-promenljive counter. T1 prva pocinje sa uvecavanjem. Obezbediti takvu sinhronizaciju.

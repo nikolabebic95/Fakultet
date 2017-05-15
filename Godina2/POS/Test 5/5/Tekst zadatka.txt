@@ -1,4 +1,0 @@
-Korišcenjem POSIX funkcija na jeziku C napisati globalne deklaracije i
-inicijalizacije, kao i kod tela dve uporedne niti first i second koje na 
-standardni izlaz ispisuju proizvoljan sadrzaj, najpre nit first, a zatim i nit 
-second.

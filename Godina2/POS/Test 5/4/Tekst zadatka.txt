@@ -1,2 +1,0 @@
-Dve niti klase NitX naizmenicno treba da inkrementiraju vrednost promenljive counter.
-Prva pocinje sa uvecavanjem ona nit koja prva pristupi. Obezbediti takvu sinhronizaciju.
