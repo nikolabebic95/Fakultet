@@ -1,6 +1,6 @@
 # Fakultet
 
-Svi kodovi (samo kodovi, ne celi projekti, jer zauzimaju mnogo) koje sam do sad kucao na fakultetu, a nekome mogu da budu bitni.
+Kodovi (samo kodovi, ne celi projekti, jer zauzimaju mnogo) koje smo do sada [Milica](https://github.com/milicadobricic) ili ja kucali na fakultetu, a nekome mogu da budu bitni.
 
 Gresaka ima, nekih sam svestan, nekih nisam.
 
