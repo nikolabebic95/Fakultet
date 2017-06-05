@@ -36,11 +36,11 @@ recursivePrintList:
     beq returnFromFunction  @ if (head == nullptr) return ret;
     b check
 recurse:
-    add r0, r0, #4
-    ldr r0, [r0]
-    bl recursivePrintList   @
-    add r4, r4, r0
-    b returnFromFunction
+    add r0, r0, #4          @ r0 becomes &r0->next
+    ldr r0, [r0]            @ r0 becomes r0->next
+    bl recursivePrintList   @ recursive call with next element
+    add r4, r4, r0          @ counter += return value
+    b returnFromFunction    @ return
 
 check:
     ldr r2, [r0]            @ r2 = head->data
@@ -73,9 +73,10 @@ check:
     b recurse               @ return from printing
 
 returnFromFunction:
-    mov r0, r4
-    pop {r4} 
-    pop {pc}
+    mov r0, r4              @ return value = r4 (r4 is the counter)
+    pop {r4}                @ restore r4
+    pop {pc}                @ return from function
+.endfunc
 
 .section .data
 

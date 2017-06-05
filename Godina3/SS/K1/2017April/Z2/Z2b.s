@@ -1,6 +1,6 @@
 @ Napisati program na ARM asembleru (funkciju main) koji sa standardnog ulaza ucita broj elemenata u listi,
-@ zatim pozivom funkcije loadList formira jednostruko ulancanu listu ucitavanjem zadatog broja brojeva, zatim
-@ pozove potprogram za obradu i na kraju obrise kreiranu listu pozivom potprograma freeList.
+@ zatim pozivom funkcije recursiveLoadList formira jednostruko ulancanu listu ucitavanjem zadatog broja brojeva, 
+@ zatim pozove potprogram za obradu i na kraju obrise kreiranu listu pozivom potprograma asmFreeList.
 
 .section .text
 
@@ -10,6 +10,9 @@
 .extern recursivePrintList
 .extern printf
 .extern scanf
+
+.extern recursiveLoadList
+.extern asmFreeList
 
 .global main
 .func
@@ -37,7 +40,7 @@ main:
     bl printf                               @ call printf("...")
     ldr r0, =variable                       @ r0 = &variable
     ldr r0, [r0]                            @ r0 = *r0 (variable - parameter for loadList - list size)
-    bl loadList                             @ call loadList(size)
+    bl recursiveLoadList                    @ call recursiveLoadList(size)
     ldr r1, =ptr                            @ r1 = &ptr 
     stm r1, {r0}                            @ *r1 = r0 (what loadList returned)
     ldr r0, =ask_for_x                      @ r0 = parameter for printf ("...")
@@ -54,9 +57,10 @@ main:
     ldr r0, =printf_format                  @ r0 = "..." -- first parameter for printf
     bl printf                               @ call printf("... %d ...", ret_val)
     ldr r0, =ptr                            @ r0 = first parameter for freeList (&head)
-    bl freeList                             @ call freeList(&head)
+    bl asmFreeList                          @ call asmFreeList(&head)
     mov r0, #0                              @ write return value from main to r0
     pop {pc}                                @ return from main
+.endfunc
 
 
 .section .data
