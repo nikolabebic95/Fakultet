@@ -1,0 +1,21 @@
+/**
+ * Konkurentno i distribuirano programiranje - predavanja
+ *
+ * Kodovi sa predavanja
+ *
+ * Sync message passing - deadlock example
+ */
+
+chan in1(int), in2(int);
+
+process P1 {
+    int value1 = 1, value2;
+    synch_send in2(value1);
+    receive in1(value2);
+}
+
+process P2 {
+    int value1, value2 = 2;
+    synch_send in1(value2);
+    receive in2(value1);
+}

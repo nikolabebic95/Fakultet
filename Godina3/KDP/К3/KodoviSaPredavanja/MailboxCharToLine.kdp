@@ -1,0 +1,28 @@
+/**
+ * Konkurentno i distribuirano programiranje - predavanja
+ *
+ * Kodovi sa predavanja
+ *
+ * Mailbox Char to Line Process
+ */
+
+static const MAXLINE = 100;
+static const CR = '\r';
+
+chan input(char), output(char[MAXLINE]);
+
+process CharToLine {
+    char line[MAXLINE];
+    int i = 0;
+    while (true) {
+        receive input(line[i]);
+        while (line[i] != CR and i < MAXLINE) {
+            i = i + 1;
+            receive input(line[i]);
+        }
+
+        line[i] = EOL;
+        send output(line);
+        i = 0;
+    }
+}

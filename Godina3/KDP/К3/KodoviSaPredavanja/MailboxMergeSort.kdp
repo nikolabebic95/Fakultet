@@ -1,0 +1,40 @@
+/**
+ * Konkurentno i distribuirano programiranje - predavanja
+ *
+ * Kodovi sa predavanja
+ *
+ * Mailbox Merge Sort Process
+ */
+
+chan in1(int), in2(int), out(int);
+
+process Merge {
+    int v1, v2;
+    receive in1(v1);
+    receive in2(v2);
+    while (v1 != EOS and v2 != EOS) {
+        if (v1 <= v2) {
+            send out(v1);
+            receive in1(v1);
+        }
+        else {
+            send out(v2);
+            receive in2(v2);
+        }
+    }
+    
+    if (v1 == EOS) {
+        while (v2 != EOS) {
+            send out(v2);
+            receive in2(v2);
+        }
+    }
+    else {
+        while (v1 != EOS) {
+            send out(v1);
+            receive in1(v1);
+        }
+    }
+
+    send out(EOS);
+}

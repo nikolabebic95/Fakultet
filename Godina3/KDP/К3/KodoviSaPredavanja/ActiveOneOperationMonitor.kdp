@@ -1,0 +1,30 @@
+/**
+ * Konkurentno i distribuirano programiranje - predavanja
+ *
+ * Kodovi sa predavanja
+ *
+ * Active one operation monitor
+ */
+
+static const int n = 100;
+
+chan request(int clientID, types of input values);
+chan reply[n](types of results);
+
+process Server {
+    int clientID;
+    // declaration of permanent variables;
+    // initialization code;
+    while (true) {
+        receive request(clientID, input variables);
+        auto results = f(input_variables, permanent_variables);
+        send reply[clientID](results);
+    }
+}
+
+process Client[i = 0 to n - 1] {
+    // Generate value arguments
+    send request(i, value_arguments);
+    receive reply[i](result_arguments);
+    // Process result arguments
+}

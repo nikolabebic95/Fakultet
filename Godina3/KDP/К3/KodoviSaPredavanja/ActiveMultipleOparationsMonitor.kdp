@@ -1,0 +1,45 @@
+/**
+ * Konkurentno i distribuirano programiranje - predavanja
+ *
+ * Kodovi sa predavanja
+ *
+ * Active multiple operations monitor
+ */
+
+static const int n = 100;
+
+type op_kind = enum(op1, /* ... , */ opn);
+type arg_type = union(arg1, /* ... , */ argn);
+type result_type = union(res1, /* ... , */ resn);
+
+chan request(int clientID, op_kind, arg_type);
+chan reply[n](result_type);
+
+process Server {
+    int clientID;
+    op_kind kind;
+    arg_type args;
+    result_type results;
+    // permanent variables;
+    // initialization code;
+    while (true) {
+        receive request(clientID, kind, args);
+        if (kind == op1) {
+            // body of op1;
+        }
+        // ...
+        else if (kind == opn) {
+            // body of opn;
+        }
+
+        send reply[clientID](results);
+    }
+}
+
+process Client[i = 0 to n - 1] {
+    arg_type myargs;
+    result_type myresults;
+    // set value arguments in myargs;
+    send request(i, opj, myargs);
+    receive reply[i](myresults);
+}

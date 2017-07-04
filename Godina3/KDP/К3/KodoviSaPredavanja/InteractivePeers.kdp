@@ -1,0 +1,78 @@
+/**
+ * Konkurentno i distribuirano programiranje - predavanja
+ *
+ * Kodovi sa predavanja
+ *
+ * Interactive peers
+ */
+
+/*****************************************************************************************************
+ * Solution 1 - Centralized
+ *****************************************************************************************************/
+chan values(int), result[n](int smallest, int largest);
+
+process P[0] { // coordinator 
+    int v; // inicijalizovana vrednost 
+    int new_value, smallest = v, largest = v;
+    for (int i = 1; i < n; i++) {
+        receive values(new_value);
+        if (new_value < smallest)
+            smallest = new_value;
+        if (new_value > largest)
+            largest = new_value;
+    }
+    for [i = 1 to n - 1] 
+        send results[i](smallest, largest)
+}
+
+process P[i = 1 to n - 1] {
+    int v; // inicijalizovana vrednost 
+    int smallest, largest;
+    send values(v);
+    receive results[i](smallest, largest);
+}
+
+/*****************************************************************************************************
+ * Solution 2 - Symmetric
+ *****************************************************************************************************/
+chan values[n](int);
+
+process P[i = 0 to n - 1] { // symmetric no coordinator 
+    int v; // inicijalizovana vrednost 
+    int new_value, smallest = v, largest = v;
+    for [j = 0 to n - 1 st j != i] send values[j](v);
+    for [j = 0 to n - 1 st j != i] {
+        receive values[i](new_value);
+        if (new_value < smallest)
+            smallest = new_value;
+        if (new_value > largest)
+            largest = new_value;
+    }
+}
+
+/*****************************************************************************************************
+ * Solution 3 - Ring
+ *****************************************************************************************************/
+chan values[n](int smallest, int largest);
+
+process P[0] { // initiator 
+    int v; //inicijalizovana vrednost 
+    int new_value, smallest = v, largest = v;
+    send values[1](smallest, largest);
+    receive values[0](smallest, largest);
+    send values[1](smallest, largest);
+}
+
+process P[i = 1 to n - 1] {
+    int v; //initialized 
+    int smallest, largest;
+    receive values[i](smallest, largest);
+    if (v < smallest)
+        smallest = v;
+    if (v > largest)
+        largest = v;
+    send values[(i + 1) mod n](smallest, largest);
+    receive values[i](smallest, largest);
+    if (i < n - 1)
+        send values[i + 1](smallest, largest);
+}
