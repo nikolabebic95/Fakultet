@@ -1,0 +1,75 @@
+/*
+ * Посматра се забавни парк са аутићима који могу да приме по једну особу
+ * (Bumper Cars Problem). Особа се шета по парку и може да одлучи да се
+ * провоза. Особа која жели да се вози стаје у ред и чека слободни ауто.
+ * Када се ослободи ауто и претходни возач напусти ауто прва особа из реда
+ * добија прилику да вози ауто и да се судара са другим аутима. Након неког
+ * времена особа завршава вожњу, враћа ауто на одговарајуће место, напушта
+ * ауто и одлази да се шета по парку. Особа може више пута да дође да се
+ * вози. Уколико постоји више слободних аута особа бира онај који је најдуже
+ * чекао на вожњу. Уколико тренутно нема особа које желе да се возе аутo стаје
+ * у ред и чека да дође особа. Користећи библиотеку C-Linda написати код за
+ * особу, аутo и за иницијализацију.
+ */
+
+static const int NUM_OF_CARS = ...;
+static const int NUM_OF_PEOPLE = ...;
+
+void car() {
+    while (true) {
+        int car;
+        int num;
+        in("car", ?car);
+        out("car", car + 1);
+        in("num", ?num);
+        out("available", car);
+        out("num", num + 1);
+        in("wanted", car);
+        in("finished", car);
+    }
+}
+
+void person() {
+    while (true) {
+        walk();
+        int car = 0;
+        int num;
+        in("choose");
+        while (true) {
+            bool success = inp("num", ?num);
+            if (!success) continue;
+            if (num == 0) {
+                out("num", num);
+                continue;
+            }
+            
+            while (true) {
+                bool loaded = inp("available", car);
+                if (!loaded) car++;
+                else break;
+            }
+
+            out("num", num - 1);
+            break;
+        }
+
+        out("choose");
+        out("wanted", car);
+        drive();
+        out("finished", car);
+    }
+}
+
+void initialize() {
+    out("car", 0);
+    out("num", 0);
+    out("choose");
+    
+    for (auto i = 0; i < NUM_OF_CARS; i++) {
+        eval(car());
+    }
+
+    for (auto i = 0; i < NUM_OF_PEOPLE; i++) {
+        eval(person());
+    }
+}

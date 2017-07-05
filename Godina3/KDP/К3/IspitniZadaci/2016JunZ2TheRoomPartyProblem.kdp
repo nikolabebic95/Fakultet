@@ -1,0 +1,56 @@
+/*
+ * У студентском дому студенти могу да организују журке (The Room Party Problem).
+ * На журку могу да долазе студенти, на журци могу да пију и могу са журке да
+ * одлазе. На журци може бити произвољан број студената. Управник студентског
+ * дома долази у обилазак соба само у случају да у соби нема студената или у
+ * случају да их је више од 50. Када је управник у соби нови студенти не могу
+ * да улазе, али присутни могу да је напуштају. Управник излази из собе тек
+ * када сви студенти из ње изађу. Користећи C-Linda библиотеку написати програм
+ * за студенте и за управника.
+ */
+
+static const int NUM_OF_STUDENTS = ...;
+
+extern void drink(int id);
+
+void student() {
+    in("manager");
+    out("manager");
+    int id;
+    in("id", ?id);
+    out("id", id + 1);
+    int num;
+    in("num", ?num);
+    out("num", num + 1);
+    drink(id);
+    in("num", ?num);
+    out("num", num - 1);
+}
+
+void manager() {
+    while (true) {
+        int num;
+        rd("num", ?num);
+        if (num == 0 || num > 50) {
+            in("manager");
+            while (true) {
+                rd("num", ?num);
+                if (num == 0) break;
+            }
+
+            out("manager");
+            break;
+        }
+    }
+}
+
+void initialize() {
+    out("id", 0);
+    out("num", 0);
+    out("manager");
+    for (auto i = 0; i < NUM_OF_STUDENTS; i++) {
+        eval(student());
+    }
+    
+    eval(manager());
+}
