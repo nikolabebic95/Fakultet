@@ -1,0 +1,104 @@
+/*
+ * Филтерска мрежа за сортирање са тернарним стаблом.
+ * Елемент мреже на своје улазе прима три сортирана низа
+ * која се завршавају са вредношћу EOS. Елемент треба да
+ * генерише излаз који је сортирани низ који се завршава
+ * са EOS. Приказати филтерску мрежу која треба да најбрже
+ * сортира 11 вредности.
+ */
+
+chan left(int), middle(int), right(int), output(int);
+
+process TernarySort {
+    int left_value;
+    int middle_value;
+    int right_value;
+    receive left(left_value);
+    receive middle(middle_value);
+    receive right(right_value);
+
+    while (left_value != EOS && middle_value != EOS && right_value != EOS) {
+        if (left_value <= middle_value && left_value <= right_value) {
+            send output(left_value);
+            receive left(left_value);
+        }
+        else if (middle_value <= left_value && middle_value <= right_value) {
+            send output(middle_value);
+            receive middle(middle_value);
+        }
+        else {
+            send output(right_value);
+            receive right(right_value);
+        }
+    }
+
+    if (left_value == EOS) {
+        while (middle_value != EOS && right_value != EOS) {
+            if (middle_value <= right_value) {
+                send output(middle_value);
+                receive middle(middle_value);
+            }
+            else {
+                send output(right_value);
+                receive right(right_value);
+            }
+        }
+    }
+    else if (middle_value == EOS) {
+        while (left_value != EOS && right_value != EOS) {
+            if (left_value <= right_value) {
+                send output(left_value);
+                receive left(left_value);
+            }
+            else {
+                send output(right_value);
+                receive right(right_value);
+            }
+        }
+    }
+    else {
+        while (left_value != EOS && middle_value != EOS) {
+            if (left_value <= middle_value) {
+                send output(left_value);
+                receive left(left_value);
+            }
+            else {
+                send output(middle_value);
+                receive middle(middle_value);
+            }
+        } 
+    }
+
+    while (left_value != EOS) {
+        send output(left_value);
+        receive left(left_value);
+    }
+
+    while (middle_value != EOS) {
+        send output(middle_value);
+        receive middle(middle_value);
+    }
+
+    while (right_value != EOS) {
+        send output(right_value);
+        receive right(right_value);
+    }
+
+    send output(EOS);
+}
+
+/*
+ * Filterska mreža za 11 vrednosti:
+ *
+ * A -v
+ * B --> ABC -------> ABC --> ABCDEFGHIJK 
+ * C -^                    ^
+ * D -v                    ^
+ * E --> DEF -v            ^
+ * F -^       v            ^
+ * G -v       v            ^
+ * H --> GHI --> DEFGHIJK -^
+ * I -^       ^
+ * J -v       ^
+ * K ---> JK -^
+ */

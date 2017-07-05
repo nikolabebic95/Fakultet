@@ -1,0 +1,58 @@
+/*
+ * Реализовати прстен од n процеса, који комуницирају асинхроним
+ * прослеђивањем порука, а код кога процес 0 генерише случајан
+ * низ од m природних бројева у интервалу од 1 до 20.000 завршен
+ * са sentinel вредношћу EONAT (нпр 20.001). Преосталих n-1 процеса
+ * одстрањују из низа све појаве првих n-1 простих бројева. Сваки
+ * процес има по један различит прост број за који је задужен.
+ * Након одстрањивања простих бројева, модификован низ се дистрибуира
+ * свим процесима. Обезбедити максималну конкурентност.
+ */
+
+static const int NUM_OF_PROCESSES = ...;
+static const int N = 20000;
+static const int EONAT = N + 1;
+static const int M = ...;
+
+int getRandomNumber() {
+    return (rand() / (static_cast<double>(RAND_MAX + 1))) * (N + 1) + 1;
+}
+
+int generateRandomArray(int *arr, int size) {
+    for (auto i = 0; i < size - 1; i++) {
+        arr[i] = getRandomNumber();
+    }
+
+    arr[size - 1] = N + 1;
+}
+
+chan arrays[n](int arr[M]);
+
+process P[0] {
+    int arr[M];
+    generateRandomArray(arr, M);
+    int size = M;
+    send arrays[1](arr, size);
+    receive arrays[0](arr, size);
+    send arrays[1](arr, size);
+}
+
+void processArray(int arr[M] int prime) {
+    int j = 0;
+    for (auto i = 0; arr[i] != EONAT; i++) {
+        arr[j] = arr[i];
+        if (arr[j] != prime) j++;
+    }
+
+    arr[j] = EONAT;
+}
+
+process P[i = 1 to NUM_OF_PROCESSES - 1] {
+    int prime = ...; // Ith prime number
+    int arr[M];
+    receive arrays[i](arr);
+    processArray(arr, prime);
+    send arrays[(i + 1) % NUM_OF_PROCESSES](arr);
+    receive arrays[i](arr);
+    if (i < NUM_OF_PROCESSES - 1) send arrays[i + 1](arr);
+}

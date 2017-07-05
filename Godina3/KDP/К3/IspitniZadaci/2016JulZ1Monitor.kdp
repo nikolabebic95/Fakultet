@@ -1,0 +1,22 @@
+/*
+ * Симулација монитора помоћу message passing-а - активни монитори са
+ * више операција. Прикажите аналогије са мониторима и опишите разлике.
+ *
+ * Glavna analogija je u tome što se server ponaša skoro identično kao
+ * "stvarni" monitor. Monitor inače ima metode koje su međusobno
+ * isključene, ima ulazni i izlazni protokol, i operacije wait i signal.
+ * Operacije aktivnog monitora analogne ovima su:
+ *   1) Međusobno isključenje - samo jedan zahtev može da se obrađuje u
+ *      jednom trenutku, jer je server jedan tok kontrole
+ *   2) Ulazni protokol - primanje zahteva na serveru
+ *   3) Izlazni protokol - odgovor servera klijentu
+ *   4) Operacija wait - Čuvanje zahteva koji čeka na uslov
+ *   5) Operacija signal - Nastavak obrade zahteva koji je čekao na uslov
+ * Monitor takođe ima i neka polja - analogno sa lokalnim promenljivama
+ * servera, i različite procedure - analogno sa kanalom zahteva i tipovima
+ * operanada (i rezultata) zahteva.
+ * Glavna razlika je u tome što aktivni monitor nije monitor, već jedna
+ * serverska nit koja obrađuje zahteve, a samo se ponaša kao neka vrsta
+ * monitora. Dakle, server nema stvarno više procedura koje su međusobno
+ * isključene, već samo može da obrađuje zahteve koji mu pristižu.
+ */

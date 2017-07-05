@@ -1,0 +1,55 @@
+/**
+ * Реализовати филтерску мрежу за сортирање integer вредности која се састоји из процеса (елемената)
+ * који стапају улазне низове на следећи начин: Ако су два улазна низа сортирани, на излазу се добија
+ * сортирани низ, али у коме се не јављају елементи са истом вредношћу. Дакле, излазни сортирани низ
+ * из процеса (елемента) је краћи од збира дужина улазних низова, ако постоје исти елементи на улазу. 
+ * Користити синхрони message passing. Максимално паралелизовати извршавање и израчунати колико је у
+ * том случају најмање процеса потребно, ако имамо 15 integer-а на улазу.
+ */
+ 
+chan left(int), right(int), output(int);
+
+process Sort {
+    int left_value;
+    int right_value;
+    receive left(left_value);
+    receive right(right_value);
+
+    while (left_value != EOS && right_value != EOS) {
+        if (left_value == right_value) {
+            synch_send out(left_value);
+            receive left(left_value);
+            receive right(right_value);
+        }
+        else if (left_value < right_value) {
+            synch_send out(left_value);
+            receive left(left_value);
+        }
+        else {
+            synch_send out(right_value);
+            receive right(right_value);
+        }
+    }
+
+    while (left_value != EOS) {
+        synch_send out(left_value);
+        receive left(left_value);
+    }
+
+    while (right_value != EOS) {
+        synch_send out(right_value);
+        receive right(right_value);
+    }
+
+    synch_send out(EOS);
+}
+
+/*
+ * Na prvom nivou je potrebno 7 procesa, koji će da sortiraju svaka dva susedna
+ * elementa osim poslednjeg. Na drugom nivou je potrebno 4 procesa (četvrti će
+ * da sortira poslednji element sa prethodna dva elementa). Na trećem nivou je
+ * potrebno dva procesa, i na četvrtom još jedan, koji će da sortira ceo niz.
+ * Dakle, potrebno je 14 procesa, ali će najviše 7 biti aktivno u jednom trenutku.
+ * Takođe, moguće je napisati program tako da on ponovo koristi istih 7 procesa za
+ * kasniju obradu.
+ */
