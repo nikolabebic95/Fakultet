@@ -1,0 +1,30 @@
+monitor Computer;
+export writeX, writeY, read;
+integer tmpX=0, tmpY=0;
+real x, y;
+condition_variable con_var;
+procedure writeX (real r)
+begin
+    while(tmpX>0) wait(con_var);
+    tmpX++;
+    x=r;
+    notifyAll(con_var);
+end
+
+procedure writeY (real r)
+begin
+    while(tmpY>0) wait(con_var);
+    tmpY++;
+    y=r;
+    notifyAll(con_var);
+end
+
+function read () : real
+begin
+    real sum;
+    while(tmpX==0 || tmpY==0) wait(con_var);
+    sum=x+y;
+    tmpX=tmpY=0;
+    notifyAll(con_var);
+    return sum;
+end
