@@ -1,0 +1,4 @@
+a) Bloku 1000 pripada prvih 1024 bajtova, a 2000. bajt pripada bloku
+1001.
+b) 3570/1024=3.4... Dakle, 3570. bajt pripada bloku 4601.
+c)2*1kB+2*(1024B/4B)*1kB=514kb

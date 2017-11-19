@@ -1,0 +1,6 @@
+Funkcija otvara trenutni direktorijum. Ukoliko ne uspe, ispisuje 
+informaciju o tome. U suprotnom ispisuje redom nazive svih ulaza
+u okviru trenutnog direktorijuma, redom.
+Na kraju zatvara trenutni direktorijum. Povratna vrednost je 0.
+
+Ovo je ls :D

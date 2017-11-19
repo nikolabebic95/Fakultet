@@ -1,0 +1,5 @@
+Izvrsice se sve operacije osim 2. 1) Izvrsava se jer su svi kljucevi dostupni,
+zakljucava se deljeni jer je operacija citanja. 2) Operacija write zahteva ekskluzivni kljuc, 
+a ne moze ga dobiti jer je deljeni zauzet. 3) Operacija citanja, zauzet je deljeni kljuc,
+pa je operacija dozvoljena. 4) i 5) Procesi A i C postaju deljeni kljuc.
+6)Proces D uzima ekskluzivni kljuc posto su oba kljuca dostupna. Otvaranje se uspesno izvrsava.
