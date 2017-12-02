@@ -1,0 +1,21 @@
+// Zadatak 1, 2016
+
+Process X:
+    request(D);
+    request(B);
+    request(C);
+
+Process Y:
+    request(D);
+    request(C);
+    request(A);
+
+Process Z:
+    request(D);
+    request(B);
+    request(C);
+
+/* Ovakvim rasporedom se onemogucava kruzna zavisnost koja je neophodan preduslov
+za postojanje deadlocka. Resurse koje koristi veci broj procesa, svaki od procesa
+trazi istim redosledom, pa se ne moze desiti da jedan proces drzi jedan resurs, drugi proces drugi resurs,
+a da oba procesa cekaju na resurs zauzet od strane onog drugog. */

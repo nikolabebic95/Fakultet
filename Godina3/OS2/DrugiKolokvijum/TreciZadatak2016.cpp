@@ -1,3 +1,5 @@
+// Zadatak 3, 2016
+
 typedef unsigned long ulong;
 typedef unsigned int RefBitReg;
 const long RefBitTableSize0 = ..., RefBitTableSize1 = ...;

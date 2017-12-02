@@ -1,3 +1,5 @@
+// Zadatak 2, 2016
+
 typedef uint unsigned int;
 struct FreeFrameDescr {
  ushort isSlotFree; // Is this slot in the pool's array free?
