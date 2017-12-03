@@ -11,10 +11,10 @@ int is_in_mem(page_descr);
 
 void update_lru_regs (PMT pmt, LRU_regs_table lru){
   for(int i=0; i<num_of_pages; i++){
-    if(is_in_mem(PMT[i])){
+    if(is_in_mem(pmt[i])){
       page_descr mask = ~((~0U)>>1);
-      LRU[i]>>=1;
-      LRU_regs_table[i]|=PMT[i] & mask;      
+      lru[i]>>=1;
+      lru[i]|=pmt[i] & mask;      
     }
   }
 }
@@ -23,10 +23,10 @@ int get_victim(PMT pmt, LRU_regs_table lru){
   page_descr min=~0U;
   int idx = -1;
   for(int i=0; i<num_of_pages; i++){
-    if(is_in_mem(PMT[i])){
-      if(LRU_regs_table[i] < min || idx == -1){
-        min=LRU_regs_table[i];
-        idx=i
+    if(is_in_mem(pmt[i])){
+      if(lru[i] < min || idx == -1){
+        min=lru[i];
+        idx=i;
       }
     }
   }

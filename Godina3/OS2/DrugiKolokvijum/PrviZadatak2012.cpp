@@ -8,7 +8,6 @@ int resourceAlloc[MAXPROC][MAXRES];
 int allocate (unsigned pid, unsigned rid){
     if(pid<0 || pid>=numOfProc || rid<0 || rid>= numOfRes) return -1;
 
-    boolean holden;
     int i;
 
     for(i=0; i<numOfProc; i++)

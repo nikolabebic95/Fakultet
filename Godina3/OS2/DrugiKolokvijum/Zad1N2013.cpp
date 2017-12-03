@@ -14,9 +14,10 @@ private:
  int np, nr;
 };
 
-ResourceAllocator::ResourceAllocator (int p, int r) : np(n), nr(r) {
+ResourceAllocator::ResourceAllocator (int p, int r) : np(p), nr(r) {
  if (np==0 || nr==0) return; // Exception
- alloc = new int[np];
+ alloc = new int*[np];
+ for (int i = 0; i < np; i++) alloc[i] = new int[nr];
  if (alloc==0) return; // Exception
  for (int i=0; i<np; i++) {
  alloc[i] = new int[nr];

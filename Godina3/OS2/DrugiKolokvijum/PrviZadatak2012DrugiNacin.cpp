@@ -8,14 +8,14 @@ int resourceAlloc[MAXPROC][MAXRES];
 int getHolder(int rid){
 	for(int i=0; i<numOfProc; i++)
 		if(resourceAlloc[i][rid] == -1)
-			return id;
+			return i;
 	return -1;
 }
 
 int getWaiter(unsigned rid){
 	for(int i=0; i<numOfProc; i++)
 		if(resourceAlloc[i][rid] == 1)
-			return id;
+			return i;
 	return -1;
 }
 int allocate (unsigned pid, unsigned rid){

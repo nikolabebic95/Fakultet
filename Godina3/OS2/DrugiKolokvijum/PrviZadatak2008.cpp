@@ -11,11 +11,11 @@ int get_victim_frame(){
   while(true){
     int frame=get_clock_frame();
     page_descr* frameD=get_owner_page(frame);
-    if(page_descr == 0) {
+    if(frameD == 0) {
       return frame;
     }
-    if(*page_descr & 1){
-      *page_descr &= ~1;
+    if(*frameD & 1){
+      *frameD &= ~1;
       move_clock_hand();
     }
     else{

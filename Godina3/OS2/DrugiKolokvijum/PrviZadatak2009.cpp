@@ -20,17 +20,17 @@ private:
 };
 
 int  FramePool::getFrame (PID proc, PgID page, FID& frame){
-  FPElem* tek=head;
+  FPElem* curr=head;
 
-  while(tek!=nullptr){
-    if(tek->proc == proc && tek->page == page){
-      frame=tek->frame;
+  while(curr!=nullptr){
+    if(curr->proc == proc && curr->page == page){
+      frame=curr->frame;
       return 1;
     }
-    tek=tek->sled;
+    curr=curr->next;
   }
 
-  if(head != mullptr){
+  if(head != nullptr){
     frame=head->frame;
     return 0;
   }
