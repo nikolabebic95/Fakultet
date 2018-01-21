@@ -16,11 +16,11 @@
             - [Povećanje bloka](#povećanje-bloka)
             - [Smanjivanje M dimenzije](#smanjivanje-m-dimenzije)
             - [Smanjivanje P dimenzije](#smanjivanje-p-dimenzije)
-                - [Dir<sub>i</sub>**NB**](#dirsubisubnb)
-                - [Dir<sub>i</sub>**B**](#dirsubisubb)
-                - [Dir<sub>i</sub>**CV**](#dirsubisubcv)
-                - [Dir<sub>i</sub>**SW**](#dirsubisubsw)
-                - [Dir<sub>i</sub>**DP**](#dirsubisubdp)
+                - [NB](#nb)
+                - [B](#b)
+                - [CV](#cv)
+                - [SW](#sw)
+                - [DP](#dp)
 
 <!-- /TOC -->
 
@@ -114,23 +114,28 @@ Umesto posebnog bita (tj posebna dva, valid i dirty bita) za svaki blok, svaki u
 U ovom slučaju, neophodna je strategija prekoračenja kada nema dovoljno pokazivača za sve procesore
 
 Ovakvi katalozi se zovu Dir<sub>i</sub>**X**
-- _i_ predstavlja broj pointera koji se koriste
+- *i* predstavlja broj pointera koji se koriste
 - **X** predstavlja strategiju prekoračenja
 - Složenost je **O(MlogP)**, jer veličina pointera je reda veličine _logP_, a _i_ je konstanta
 
-Moguće strategije:
+Moguće strategije (**X**):
+- Dir<sub>_i_</sub>**NB**
+- Dir<sub>_i_</sub>**B**
+- Dir<sub>_i_</sub>**CV**
+- Dir<sub>_i_</sub>**SW**
+- Dir<sub>_i_</sub>**DP**
 
-##### Dir<sub>i</sub>**NB**
+##### NB
 
 Pri prekoračenju pointera, jedan pointer se oslobađa tako što se tom procesoru invalidira blok
 
-##### Dir<sub>i</sub>**B**
+##### B
 
 Pri prekoračenju pointera, broadcast bit se postavlja na 1.
 
 Pri upisu, ako je broadcast bit == 1, naredni upis invalidira sve ostale kopije. Ovako se postiže da se ne ograničava broj kopija koje čitaju neki podatak
 
-##### Dir<sub>i</sub>**CV**
+##### CV
 
 Postoji overflow bit. pri prekoračenju pointera, overflow bit se setuje, i prelazi se na sledeću tehniku:
 
@@ -140,7 +145,7 @@ Bit koji predstavlja neku grupu se setuje ako bilo koji od tih procesora ima kop
 
 U slučaju da neki procesor iz grupe sa bitom == 1 pokuša write, cela ta grupa se invalidira (ali ne i svi van te grupe, što je optimizacija u odnosu na prethodnu tehniku)
 
-##### Dir<sub>i</sub>**SW**
+##### SW
 
 Pri prekoračenju pointera, setuje se overflow bit, i generiše softverski prekid. Taj prekid onda zapamti sve pointere u memoriji.
 
@@ -148,7 +153,7 @@ Pri upisu, ako je overflow bit == 1, ponovo se generiše softverski prekid, i ko
 
 Ova tehnika povećava kašnjenje zbog obrade prekida softverski, ali nema nepotrebnih invalidacija
 
-##### Dir<sub>i</sub>**DP**
+##### DP
 
 Ne postoje pointeri u svakom ulazu, nego samo pokazivač na prvi element liste koja sadrži pointere za taj ulaz. Postoje globalni pointeri koji služe za sve ulaze. Kad nema dovoljno globalnih pointera, neki od njih se invalidira
 
