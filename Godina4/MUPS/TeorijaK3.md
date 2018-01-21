@@ -1,3 +1,29 @@
+# MUPS Teorija K3
+
+<!-- TOC -->
+
+- [MUPS Teorija K3](#mups-teorija-k3)
+- [Adaptivni protokoli](#adaptivni-protokoli)
+- [Directory protokoli](#directory-protokoli)
+    - [Ravni](#ravni)
+        - [Akcije protkola:](#akcije-protkola)
+            - [Read miss, dirty bit == 0:](#read-miss-dirty-bit--0)
+            - [Read miss, dirty bit == 1:](#read-miss-dirty-bit--1)
+            - [Optimizacija, read miss, dirty bit == 1:](#optimizacija-read-miss-dirty-bit--1)
+            - [Write miss, dirty bit == 0:](#write-miss-dirty-bit--0)
+            - [Izbacivanje bloka zbog algoritma evikcije](#izbacivanje-bloka-zbog-algoritma-evikcije)
+        - [Organizacija kataloga](#organizacija-kataloga)
+            - [Povećanje bloka](#povećanje-bloka)
+            - [Smanjivanje M dimenzije](#smanjivanje-m-dimenzije)
+            - [Smanjivanje P dimenzije](#smanjivanje-p-dimenzije)
+                - [Dir<sub>_i_</sub>**NB**](#dirsub_i_subnb)
+                - [Dir<sub>_i_</sub>**B**](#dirsub_i_subb)
+                - [Dir<sub>_i_</sub>**CV**](#dirsub_i_subcv)
+                - [Dir<sub>_i_</sub>**SW**](#dirsub_i_subsw)
+                - [Dir<sub>_i_</sub>**DP**](#dirsub_i_subdp)
+
+<!-- /TOC -->
+
 # Adaptivni protokoli
 
 - RWB (Read & Write Broadcast)
@@ -94,17 +120,17 @@ Ovakvi katalozi se zovu Dir<sub>_i_</sub>**X**
 
 Moguće strategije:
 
-##### Dir<sub>i</sub>**NB**
+##### Dir<sub>_i_</sub>**NB**
 
 Pri prekoračenju pointera, jedan pointer se oslobađa tako što se tom procesoru invalidira blok
 
-##### Dir<sub>i</sub>**B**
+##### Dir<sub>_i_</sub>**B**
 
 Pri prekoračenju pointera, broadcast bit se postavlja na 1.
 
 Pri upisu, ako je broadcast bit == 1, naredni upis invalidira sve ostale kopije. Ovako se postiže da se ne ograničava broj kopija koje čitaju neki podatak
 
-##### Dir<sub>i</sub>**CV**
+##### Dir<sub>_i_</sub>**CV**
 
 Postoji overflow bit. pri prekoračenju pointera, overflow bit se setuje, i prelazi se na sledeću tehniku:
 
@@ -114,7 +140,7 @@ Bit koji predstavlja neku grupu se setuje ako bilo koji od tih procesora ima kop
 
 U slučaju da neki procesor iz grupe sa bitom == 1 pokuša write, cela ta grupa se invalidira (ali ne i svi van te grupe, što je optimizacija u odnosu na prethodnu tehniku)
 
-##### Dir<sub>i</sub>**SW**
+##### Dir<sub>_i_</sub>**SW**
 
 Pri prekoračenju pointera, setuje se overflow bit, i generiše softverski prekid. Taj prekid onda zapamti sve pointere u memoriji.
 
@@ -122,7 +148,7 @@ Pri upisu, ako je overflow bit == 1, ponovo se generiše softverski prekid, i ko
 
 Ova tehnika povećava kašnjenje zbog obrade prekida softverski, ali nema nepotrebnih invalidacija
 
-##### Dir<sub>i</sub>**DP**
+##### Dir<sub>_i_</sub>**DP**
 
 Ne postoje pointeri u svakom ulazu, nego samo pokazivač na prvi element liste koja sadrži pointere za taj ulaz. Postoje globalni pointeri koji služe za sve ulaze. Kad nema dovoljno globalnih pointera, neki od njih se invalidira
 
