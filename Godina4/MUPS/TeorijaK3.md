@@ -21,11 +21,15 @@
                 - [CV](#cv)
                 - [SW](#sw)
                 - [DP](#dp)
-    - [Hijerarhijski directory protokoli](#hijerarhijski-directory-protokoli)
+    - [Hijerarhijski protokoli](#hijerarhijski-protokoli)
         - [Inkluzija](#inkluzija)
         - [Dvonivovske hijerarhije](#dvonivovske-hijerarhije)
             - [Prednosti:](#prednosti)
             - [Nedostaci:](#nedostaci)
+        - [Hijerarhijski snoopy protokoli](#hijerarhijski-snoopy-protokoli)
+            - [Sa centralizovanom globalnom memorijom](#sa-centralizovanom-globalnom-memorijom)
+            - [Sa distribuiranim lokalnim memorijama](#sa-distribuiranim-lokalnim-memorijama)
+        - [Hijerarhijski directory protokoli](#hijerarhijski-directory-protokoli)
 
 <!-- /TOC -->
 
@@ -162,7 +166,7 @@ Ova tehnika povećava kašnjenje zbog obrade prekida softverski, ali nema nepotr
 
 Ne postoje pointeri u svakom ulazu, nego samo pokazivač na prvi element liste koja sadrži pointere za taj ulaz. Postoje globalni pointeri koji služe za sve ulaze. Kad nema dovoljno globalnih pointera, neki od njih se invalidira
 
-## Hijerarhijski directory protokoli
+## Hijerarhijski protokoli
 
 Keš memorije obično nisu ravne, nego postoji više nivoa keševa (na primer, L1, L2 i L3 keš). Ovakve hijerarhije mogu da budu u potpunosti na jednom jezgru, u potpunosti zajedničke za više jezgara, ili da neki nivoi budu privatni za jezgro, a neki deljeni.
 
@@ -180,9 +184,11 @@ Ovaj problem se rešava na dva načina:
 
 ### Dvonivovske hijerarhije
 
-Postoje dva protokola, jedan unutar čvorova, a drugi između različitih čvorova.
+Čvor je jeden multiprocesor manjeg obima (dakle, čvor je jedan običan računar koji je povezan mrežom sa ostalim čvorovima). Čvor ima svoje nivoe keševa.
 
-Čvor je jeden multiprocesor manjeg obima (dakle, čvor je jedan običan računar koji je povezan mrežom sa ostalim čvorovima)
+Najprostiji primer bi bio da računar ima dva keša, L1 i L2, i da je L1 privatan za jezgro, a L2 zajednički za sva jezgra istog čipa.
+
+Postoje dva protokola, jedan (spoljni) za odnos L2 keša prema memoriji i ostatku mreže, i jedan (unutrašnji) za odnos L1 keša ka L2 kešu.
 
 - Spoljašnji protokol je obično directory-based
 - Unutrašnji protokol je obično snoopy-based
@@ -198,3 +204,36 @@ U praksi svakako postoje sve 4 kombinacije (snoopy/directory - snoopy/directory)
 #### Nedostaci:
 
 - Ako se radi all-to-all komunikacija, ovo je mnogo loše, jer ima mnogo komunikacije između čvorova
+- Veće je kašnjenje kod misseva, jer se prvo snoopuje lokalna magistrala, pa tek onda šalje udaljeni zahtev
+
+### Hijerarhijski snoopy protokoli
+
+Postoje dve vrste ovakvih sistema:
+- Sa centralizovanom globalnom memorijom
+- Sa distribuiranim lokalnim memorijama
+
+#### Sa centralizovanom globalnom memorijom
+
+- L1 keševi su obično SRAM keševi najboljih performansi
+- Na magistrali iznad tih keševa (ispod zajedničkog L2) se radi standardni snoopy protokol
+- L2 su mnogo veće set-asocijativne keš memorije (DRAM)
+- Održava se inkluzija
+
+#### Sa distribuiranim lokalnim memorijama
+
+- Memorija je vezana na L1 keševe, a L2 keš služi za keširanje podataka sa udaljenih memorija
+- Ne održava se inkluzija, jer je nepotrebna
+
+### Hijerarhijski directory protokoli
+
+Katalog je organizovan kao stablo. U listovima se nalaze samo procesori i distribuirana memorija. U internim čvorovima se nalaze samo informacije iz kataloga
+
+Svaki čvor je koren stabla za blokove iz svoje memorije. Takođe, on može biti interni čvor ili list za ostale blokove.
+
+Ulaz kataloga govori da li je taj blok keširan u njegovim podsablima, a ako je čvor koren, onda govori i da li su njegovi, lokalni blokovi keširani izvan
+
+Kada se traži informacija o bloku, ide se "uzbrdo" po stablu dok se ne naiđe na čvor koji ume da odgovori
+
+Prednost: Katalozi su manji
+
+Nedostatak: Broj poruka se povećava jer se mora slati više poruka uz i niz stablo
