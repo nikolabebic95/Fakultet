@@ -21,6 +21,8 @@
                 - [CV](#cv)
                 - [SW](#sw)
                 - [DP](#dp)
+    - [Hijerarhijski directory protokoli](#hijerarhijski-directory-protokoli)
+        - [Inkluzija](#inkluzija)
 
 <!-- /TOC -->
 
@@ -156,4 +158,20 @@ Ova tehnika povećava kašnjenje zbog obrade prekida softverski, ali nema nepotr
 ##### DP
 
 Ne postoje pointeri u svakom ulazu, nego samo pokazivač na prvi element liste koja sadrži pointere za taj ulaz. Postoje globalni pointeri koji služe za sve ulaze. Kad nema dovoljno globalnih pointera, neki od njih se invalidira
+
+## Hijerarhijski directory protokoli
+
+Keš memorije obično nisu ravne, nego postoji više nivoa keševa (na primer, L1, L2 i L3 keš). Ovakve hijerarhije mogu da budu u potpunosti na jednom jezgru, u potpunosti zajedničke za više jezgara, ili da neki nivoi budu privatni za jezgro, a neki deljeni.
+
+Uobičajen slučaj je da su L1 i L2 privatni za jezgro, dok je L3 deljen između jezgara na istom čipu
+
+### Inkluzija
+
+U hijerarhijskim keševima, sadržaj svakog keša nižeg nivoa mora da bude podskup sadržaja keša nivoa iznad njega.
+
+Problem ovde može da nastane kod LRU algoritma zamene - neki blok može biti izbačen iz L2 nivoa, a da ostane u L1 nivou, zbog LRU algoritma zamene.
+
+Ovaj problem se rešava na dva načina:
+- L1 ima Write through politiku. Problem se rešava automatski, jer se svaka promena na L1 nivou automatski dešava i na L2 nivou, tako da ako je nešto skoro korišćeno na L1 nivou automatski je skoro korišćeno i na L2 nivou.
+- L1 ima Write back politiku. Propagira se korišćenje bloka iz L1 u L2 nivo, tako da nijedan blok neće biti izbačen iz L2 pre nego što je izbačen iz L1. U L2 se za svaki blok uvodi još jedan bit (dirty-invalid), koji označava da je blok menjan u L1 kešu. Pomoću tog bita osiguravamo da kada na magistrali snoop-ujemo da neko traži od nas taj blok, uradimo flush iz L1 u L2, i iz L2 prosledimo dalje, a kada se blok izbaci iz L1 usled zamene, ukoliko je ovaj bit postavljen, flushuje se u L2 nivo.
 
