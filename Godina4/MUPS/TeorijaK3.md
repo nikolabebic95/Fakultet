@@ -30,6 +30,20 @@
             - [Sa centralizovanom globalnom memorijom](#sa-centralizovanom-globalnom-memorijom)
             - [Sa distribuiranim lokalnim memorijama](#sa-distribuiranim-lokalnim-memorijama)
         - [Hijerarhijski directory protokoli](#hijerarhijski-directory-protokoli)
+- [Interkonekcione mreže](#interkonekcione-mreže)
+    - [Indirektne mreže](#indirektne-mreže)
+        - [Magistrala](#magistrala)
+        - [Krosbar](#krosbar)
+        - [MIN (Multistage interconnection networks)](#min-multistage-interconnection-networks)
+    - [Direktne mreže](#direktne-mreže)
+        - [Linearni niz](#linearni-niz)
+        - [Prsten](#prsten)
+        - [Mesh](#mesh)
+        - [Torus](#torus)
+        - [Hypercube](#hypercube)
+            - [CCC](#ccc)
+            - [K-arna d-kocka](#k-arna-d-kocka)
+        - [Stabla](#stabla)
 
 <!-- /TOC -->
 
@@ -237,3 +251,141 @@ Kada se traži informacija o bloku, ide se "uzbrdo" po stablu dok se ne naiđe n
 Prednost: Katalozi su manji
 
 Nedostatak: Broj poruka se povećava jer se mora slati više poruka uz i niz stablo
+
+# Interkonekcione mreže
+
+Mreže povezuju procesore, keš memorije, glavne memorije, ulazno-izlazne uređaje...
+
+Za performanse je bitna brzina komunikacije, i energija potrošena za komunikaciju
+
+Glavne projektne odluke:
+- Topologija mreže
+- Rutiranje unutar mreže
+- Baferovanje u mreži
+
+Domeni mreža:
+- OCN (On-chip Networks)
+- SAN (System/Storage Area Networks)
+- LAN (Local Area Networks)
+- WAN (Wide Area Networks)
+
+Vrste mreža:
+- Indirektne
+- Direktne
+
+## Indirektne mreže
+
+Mreže kod kojih su elementi indirektno vezani, preko nekog switch-based medijuma. Kod njih se veze između čvorova uspostavljaju dinamički
+
+### Magistrala
+
+Najprostija indirektna mreža.
+
+Svi elementi su vezani direktno na jednu magistralu, a indirektno međusobno, preko te magistrale
+
+Prednosti:
+- Jednostavnost
+- Cena je mala
+- Održavanje koherencije nije teško
+
+Mane:
+- Neskalabilnost
+- Samo jedan transfer između dva elementa može da se izvršava u jednom trenutku
+
+### Krosbar
+
+Povezivanje svakog ulaza sa svakim izlazom. Switch na svakom paru ulaz-izlaz. Ukoliko je izlazni port slobodan, može se propustiti ulaz na izlaz
+
+Prednost: Udaljenost svakog dela mreže od svakog drugog je 1 hop
+
+Mana: Neskalabilna, jer je **O(n<sup>2</sup>)** po broju elemenata
+
+### MIN (Multistage interconnection networks)
+
+Ulazi se do izlaza prosleđuju u _logN_ koraka, gde je na svakom koraku svič koji odlučuje na koji od dva izlaza će da prosledi ulaz (slična priča kao sorting networks).
+
+## Direktne mreže
+
+Svaki čvor je direktno vezan sa nekoliko drugih čvorova
+
+Parametri mreža:
+- _d_ - Stepen čvora
+- _D_ - Prečnik
+- Simetrija (u osnosu na svaki čvor)
+- Regularnost (ako je stepen svima isti, onda je regularna)
+- _B_ - propusni opseg najmanje bisekcije
+
+### Linearni niz
+
+Osobine:
+- _d_ = 2
+- _D_ = _n_ - 1
+- _B_ = 1
+- Prosečna udaljenost = ~_n_/3
+- Mreža nije simetrična, ali je regularna
+- Ponaša se kao magistrala, ali dozvoljava više istovremenih transfera
+
+### Prsten
+
+Osobine:
+- _d_ = 2
+- _D_ = _n_/2
+- _B_ = 2
+- Prosečna udaljenost = ~_n_/4
+- Simetrična, regularna
+
+### Mesh
+
+Predstavlja 2D matricu elemenata grafa
+
+Osobine:
+- _d_ = 4, 3 ili 2
+- _D_ = 2(&radic;_n_ - 1)
+- _B_ = &radic;_n_
+- Pogodna za algoritme koji se dosta oslanjaju na lokalnu komunikaciju sa najbližim susedima
+- Mreža nije simetrična, ni regularna
+
+### Torus
+
+Isto kao mesh, samo što su svi redovi i kolone matrice prstenovi
+
+Osobine:
+- _d_ = 4
+- _D_ = 2(&radic;_n_ - 1)
+- _B_ = 2&radic;_n_
+- Pogodna za algoritme sa 2D nizovima (matricama)
+- Simetrična
+
+### Hypercube
+
+Binarna kocka dimenzije _d_
+
+Binarna kocka je kocka čija svaka ivica ima 2 elementa
+
+Osobine:
+- _d_ = 2<sup>_d_</sup>
+- _D_ = _d_ - **O(_log n_)**
+- _B_ = _n_/2
+- Teška za implementaciju za veliko _d_
+
+#### CCC
+
+- U temenima kocke se nalaze prstenovi
+- _n_ = _d_*2<sup>_d_</dup>
+- _D_ = 2*_d_
+
+#### K-arna d-kocka
+
+Generalizacija hiperkocke tako da ne bude binarna, već na svakoj ivici postoji _k_ elemenata
+
+- _n_ = _k_<sup>_d_</sup>
+- Stepen čvora = 2*_d_
+- _D_ = _dk_/2
+
+### Stabla
+
+Osobine
+- _n_ = 2<sup>k</sup> - 1
+- _d_ = 3
+- _D_ = 2(_k_ - 1) - **O(_log n_)**
+- Problem je usko grlo na višim nivoima
