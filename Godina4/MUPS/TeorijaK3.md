@@ -23,6 +23,9 @@
                 - [DP](#dp)
     - [Hijerarhijski directory protokoli](#hijerarhijski-directory-protokoli)
         - [Inkluzija](#inkluzija)
+        - [Dvonivovske hijerarhije](#dvonivovske-hijerarhije)
+            - [Prednosti:](#prednosti)
+            - [Nedostaci:](#nedostaci)
 
 <!-- /TOC -->
 
@@ -175,3 +178,23 @@ Ovaj problem se rešava na dva načina:
 - L1 ima Write through politiku. Problem se rešava automatski, jer se svaka promena na L1 nivou automatski dešava i na L2 nivou, tako da ako je nešto skoro korišćeno na L1 nivou automatski je skoro korišćeno i na L2 nivou.
 - L1 ima Write back politiku. Propagira se korišćenje bloka iz L1 u L2 nivo, tako da nijedan blok neće biti izbačen iz L2 pre nego što je izbačen iz L1. U L2 se za svaki blok uvodi još jedan bit (dirty-invalid), koji označava da je blok menjan u L1 kešu. Pomoću tog bita osiguravamo da kada na magistrali snoop-ujemo da neko traži od nas taj blok, uradimo flush iz L1 u L2, i iz L2 prosledimo dalje, a kada se blok izbaci iz L1 usled zamene, ukoliko je ovaj bit postavljen, flushuje se u L2 nivo.
 
+### Dvonivovske hijerarhije
+
+Postoje dva protokola, jedan unutar čvorova, a drugi između različitih čvorova.
+
+Čvor je jeden multiprocesor manjeg obima (dakle, čvor je jedan običan računar koji je povezan mrežom sa ostalim čvorovima)
+
+- Spoljašnji protokol je obično directory-based
+- Unutrašnji protokol je obično snoopy-based
+
+U praksi svakako postoje sve 4 kombinacije (snoopy/directory - snoopy/directory)
+
+#### Prednosti:
+
+- Manji potreban prostor za katalog
+- Dosta komunikacije se dešava unutar jednog čvora, a ne između čvorova, preko mreže
+- Manje udaljenih keš misseva
+
+#### Nedostaci:
+
+- Ako se radi all-to-all komunikacija, ovo je mnogo loše, jer ima mnogo komunikacije između čvorova
