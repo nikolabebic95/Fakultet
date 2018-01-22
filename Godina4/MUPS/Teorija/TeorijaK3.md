@@ -126,7 +126,7 @@ Ova optimizacija i dalje ostavlja veličinu kataloga kao O(MP), ali je optimizac
 
 #### Smanjivanje M dimenzije
 
-Postojaće veliki broj blokova koje niko od ostalih procesora ne drži, tako da nema poente da se to drži u katalogu sa svim valid bitima == 0. Onda je moguće M dimenziju organizovati kao heš mapu, koja će sadržati samo ulaze koje neko od drugih procesora drži.
+Postojaće veliki broj blokova koje niko od ostalih procesora ne drži, tako da nema poente da se to drži u katalogu sa svim valid bitima == 0. Onda je moguće M dimenziju organizovati kao malu keš memoriju, koja će sadržati broj ulaza manji od M. 
 
 #### Smanjivanje P dimenzije
 
