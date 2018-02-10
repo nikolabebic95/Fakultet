@@ -9,7 +9,7 @@
 xor AX, AX          ; AX = 0000H
 add AX, [BX]        ; AX = 7372H
 add AL, [BP][SI]    ; AX = 73BEH
-add AX, [BX+8][SI]  ; AX = B655H
+add AX, [BX+8][SI]  ; AX = 024BH
 ```
 
 ## 2 (4)
