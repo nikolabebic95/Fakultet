@@ -57,19 +57,20 @@ izvršava se druga faza druge i treća faza prve instrukcije.
 ## 7 (4)
 **Нацртати шему Pshare предиктора и извести формулу за цијену коштања тог предиктора?**
 
-TODO
+Ima slika na [05.Bps.doc](http://home.etf.rs/~vm/os/mips/predavanja/micr/), cena je _m * 2<sup>n</sup> + 2<sup>m + 1</sup>_
 
 ## 8 (4)
 **Које су два основна приступа у дизајнирању спекулативних инструкција?**
 
-TODO
+- Compile time - kompajler radi predikciju grananja i spekulaciju, hardver samo pomogne u oporavku ukoliko predikcija nije bila tačna.
+- Run time - hardver radi i predikciju i spekulaciju, kompajler generiše kod kao što bi i inače.
 
 ## 9 (4)
 **Објаснити limited directory протоколе**
 
-TODO
+To su _directory_ protokoli kod kojih katalog ne zauzima **O(MP)** prostora, nego manje, tako što se smanjuje **P** dimenzija (**M** dimenzija predstavlja broj blokova koji se dele, **P** dimenzija broj procesora koji mogu da dele memoriju). U ovom slučaju, moguće je smanjiti **P** dimenziju na nekoliko načuna, pomoću Dir<sub>_i_</sub>**X** protokola. Ovi protokoli rade tako što ne čuvaju informacije o svim mogućim procesima, već imaju fiksan broj pointera koji služe da indikuju da neki procesor drži određen blok. Parametar _i_ predstavlja broj pointera koji se koriste, a _X_ predstavlja tehniku koja se koristi u slučaju prekoračenja broja pointera.
 
 ## 10 (4)
 **Навести основну подјелу протокола рутирања у бежичним сензорским мрежама према начину идентификације чворова. Дати кратак опис сваке врсте.**
 
-TODO
+Nije rađeno
