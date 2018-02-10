@@ -8,8 +8,8 @@
 ```asm
 pop AX                  ; AX = D5D4H, SP = 112H
 add AX, [BX]            ; AX = 4946H
-add AL, [BP][SI]        ; AX = 49AAH
-add AX, [BX+19h][SI]    ; AX = FF5EH
+add AL, [BP][SI]        ; AX = 4920H
+add AX, [BX+19h][SI]    ; AX = D9AFH
 ```
 
 ## 2 (4)

@@ -8,8 +8,8 @@
 ```asm
 xor AX, AX          ; AX = 0000H
 add AX, [BX]        ; AX = 7372H
-add AL, [BP][SI]    ; AX = 7315H
-add AX, [BX+8][SI]  ; AX = 27C8H
+add AL, [BP][SI]    ; AX = 73BEH
+add AX, [BX+8][SI]  ; AX = B655H
 ```
 
 ## 2 (4)
