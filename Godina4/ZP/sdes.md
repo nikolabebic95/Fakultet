@@ -124,4 +124,51 @@ S2:
     - `0b1110` - desna polovina iz tačke _1_
     - `0b0101` - rezultat tačke _8_
     - `0b11100101` - rezultat cele runde
- 
+
+## Struktura celog SDES algoritma
+
+1) Plain text se propusti kroz IP
+2) Uradi se jedna runda, njen ulazni podatak je izlazni podatak tačke _1_
+3) Uradi se druga runda, njen ulazni podatak je izlazni podatak prve runde
+4) Leva i desna polovina rezultata druge runde zamene mesta
+5) Rezultat tačke _4_ se propusti kroz IP<sup>-1</sup>
+
+### Primer
+
+Svi indeksi počinju od 1
+
+|Identifikator|Vrednost              | 
+|-------------|----------------------|
+|Plain text   |`0b10111101`          |
+|IP           |2, 6, 3, 1, 4, 8, 5, 7|
+
+---
+
+1) Propuštanje kroz IP
+    - Prvi bit rezultata je drugi bit plain text-a
+    - Drugi bit rezultata je šesti bit plain text-a
+    - ...
+    - Rezultat je `0b01111110`
+2) Prva runda
+    - Urađena u gornjem primeru
+    - Rezultat je `0b11100101`
+3) Druga runda
+    - Radi se na isti način kao gornji primer
+    - Rezultat je `0b01011001`
+4) Zamena mesta leve i desne polovine
+    - Leva polovina je rezultata druge runde je `0b0101`
+    - Desna polovina je `0b1001`
+    - Rezultat je `0b10010101`
+5) Propuštanje kroz IP<sup>-1</sup>
+    - Prvo moramo da izračunamo IP<sup>-1</sup>
+    - IP je _2, 6, 3, 1, 4, 8, 5, 7_
+    - Broj _1_ se u IP nalazi na mestu _4_
+    - Broj _2_ se u IP nalazi na mestu _1_
+    - Broj _3_ se u IP nalazi na mestu _3_
+    - Broj _4_ se u IP nalazi na mestu _5_
+    - ...
+    - IP<sup>-1</sup> je _4, 1, 3, 5, 7, 2, 8, 6_
+    - **Na isti način se IP generiše iz IP<sup>-1</sup> u prvoj tački, ukoliko je IP<sup>-1</sup> dato, a IP nije**
+    - Prvi bit konačnog rezultata je četvrti bit rezultata tačke _4_
+    - ...
+    - Konačan rezultat je `0b11000011`
