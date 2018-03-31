@@ -82,19 +82,18 @@ Primer - poruka _napadamo u podne ako ne bude vetra_, ključ `4 3 1 2 5 6 7`
 
 Poruka po vrstama, sa ključem iznad:
 
-```
-4 3 1 2 5 6 7
-n a p a d a m
-o u p o d n e
-a k o n e b u
-d e v e t r a
-```
+|4|3|1|2|5|6|7|
+|---|---|---|---|---|---|---|
+|N|A|P|A|D|A|M|
+|O|U|P|O|D|N|E|
+|A|K|O|N|E|B|U|
+|D|E|V|E|T|R|A|
 
 U ključu se broj _1_ nalazi na trećem mestu, tako da se treća kolona čita prva. Broj _2_ se nalazi na četvrtom mestu, tako da se četvrta kolona čita druga. Kada ovako pročitamo poruku, dobijemo šifrovan tekst _ppovaoneaukenoadddetanbrmeua_
 
 ## _Hill cipher_ algoritam
 
-Kod ovogo algoritma, svi karakteri se kodiraju numeričkim vrednostima, tako što je _a_=0, _b_=1, ..., _z_=25.
+Kod ovog algoritma, svi karakteri se kodiraju numeričkim vrednostima, tako što je _a_=0, _b_=1, ..., _z_=25.
 
 Ključ je matrica _m_\*_m_. Bira se _m_ sukcesivnih karaktera iz _plain text_-a, i _m_ šifrovanih karaktera se dobija sledećom formulom:
 
