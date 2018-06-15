@@ -1,0 +1,11 @@
+Process X {
+    received : boolean;
+    received := false;
+    character : char;
+
+    *[
+        received == false; west ? character -> received = true
+        ||
+        received == true -> east ! character; received = false
+    ]
+}

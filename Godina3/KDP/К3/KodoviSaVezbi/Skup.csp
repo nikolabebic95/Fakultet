@@ -1,0 +1,38 @@
+(i = 0..100) Process S(i){
+    n : integer;
+    value : integer;
+    inserted : boolean;
+    inserted = false;
+
+    *[
+        X?insert(n) -> [
+            inserted; value != n -> S(i+1)!insert(n)
+            ||
+            !inserted -> value = n; inserted = true
+        ]
+        ||
+        S(i-1)?insert(n) -> [
+            inserted; value != n -> S(i+1)!insert(n)
+            ||
+            !inserted -> value = n; inserted = true
+        ]
+        ||
+        X?has(n) -> [
+            inserted; n == value -> X!true
+            ||
+            inserted; n != value -> S(i+1)!has(n)
+            ||
+            !inserted -> X!false
+        ]
+        ||
+        S(i-1)?has(n) -> [
+            inserted; n == value -> X!true
+            ||
+            inserted; n != value -> S(i+1)!has(n)
+            ||
+            !inserted -> X!false
+        ]
+        ||
+
+    ]
+}

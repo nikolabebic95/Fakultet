@@ -1,0 +1,16 @@
+Process X{
+    c : char;
+
+    *[
+        west ? c -> [
+            c == "*" -> west ? c;
+            [
+                c == "*" -> east ! "^"
+                ||
+                c != "*" -> east ! "*"; east ! c
+            ]
+            ||
+            c != "*" -> east ! c
+        ]
+    ]
+}

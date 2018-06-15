@@ -1,0 +1,11 @@
+(i = 0..LIMIT) Process fac(i){
+    value : integer
+    ret : integer
+    *[
+        fac(i-1) ? value ->[
+            value == 0 -> fac(i-1) ! 1
+            ||
+            value != 0 -> fac(i+1) ! value - 1; fac(i+1) ? ret; fac(i-1) ! ret * value
+        ]
+    ]
+}
